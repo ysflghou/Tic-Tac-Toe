@@ -1,4 +1,25 @@
-﻿<h3>Next player: "@(xIsNext ? 'X' : 'O')"</h3>
+﻿@{
+    var gameStatus = Helper.CalculateGameStatus(values);
+    string status;
+    if (gameStatus == GameStatus.X_wins)
+    {
+        status = "Winner: X";
+    }
+    else if (gameStatus == GameStatus.O_wins)
+    {
+        status = "Winner: O";
+    }
+    else if (gameStatus == GameStatus.Draw)
+    {
+        status = "Draw !";
+    }
+    else
+    {
+        char nextPlayer = xIsNext ? 'X' : 'O';
+        status = $"Next player: {nextPlayer}";
+    }
+    <h3>@status</h3>
+}
 <div class="board">
     @for (int i = 0; i < 9; i++)
     {
@@ -19,12 +40,21 @@
         ' ', ' ', ' ',
         ' ', ' ', ' ',
         ' ', ' ', ' '
-            };
+                };
         xIsNext = true;
         return Task.CompletedTask;
     }
     private void HandleClick(int i)
     {
+        if (values[i] != ' ')
+        {
+            return;
+        }
+        bool isGameFiniched = Helper.CalculateGameStatus(values) != GameStatus.NotYetFiniched;
+        if (isGameFiniched)
+        {
+            return;
+        }
         bool xToPlay = xIsNext;
         values[i] = xToPlay ? 'X' : 'O';
         xIsNext = !xToPlay;
