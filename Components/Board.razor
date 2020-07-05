@@ -1,14 +1,30 @@
 ﻿<div class="board">
-    <Square />
-    <Square />
-    <Square />
-    <Square />
-    <Square />
-    <Square />
-    <Square />
-    <Square />
-    <Square />
+    @for (int i = 0; i < 9; i++)
+    {
+        int squareNumber = i;
+        <Square @key=squareNumber
+                value=values[squareNumber]
+                ClickHandler="@(() => HandleClick(squareNumber))"/>
+    }
 </div>
+
+@code { 
+    private char[] values = new char[9];
+    protected override Task OnInitializedAsync()
+    {
+        values = new char[9]
+        {
+        'O', ' ', ' ',
+        ' ', ' ', ' ',
+        ' ', ' ', ' '
+        };
+        return Task.CompletedTask;
+    }
+    private void HandleClick(int i)
+    {
+        values[i] = values[i] == 'O' ? 'X' : 'O';
+    }
+}
 
 <style scoped>
     .board {
