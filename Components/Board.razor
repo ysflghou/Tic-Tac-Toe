@@ -29,20 +29,14 @@
                 ClickHandler="@(() => HandleClick(squareNumber))" />
     }
 </div>
+<button class="btn btn-primary" @onclick="PlayAgainHandler">Play again</button>
 
 @code {
     private bool xIsNext;
     private char[] values = new char[9];
     protected override void OnInitialized()
     {
-        values = new char[9]
-        {
-        ' ', ' ', ' ',
-        ' ', ' ', ' ',
-        ' ', ' ', ' '
-                };
-        xIsNext = true;
-        return Task.CompletedTask;
+        InitState();
     }
     private void HandleClick(int i)
     {
@@ -59,6 +53,21 @@
         values[i] = xToPlay ? 'X' : 'O';
         xIsNext = !xToPlay;
     }
+    private void PlayAgainHandler()
+    {
+        InitState();
+    }
+    private void InitState()
+    {
+        values = new char[9]
+        {
+        ' ', ' ', ' ',
+        ' ', ' ', ' ',
+        ' ', ' ', ' '
+        };
+        xIsNext = true;
+        return;
+    }
 }
 
 <style scoped>
@@ -70,6 +79,10 @@
         width: 200px;
         height: 200px;
         border-radius: 10%;
+    }
+    button {
+        border-radius: 10%;
+        margin: 10px;
     }
 </style>
 
